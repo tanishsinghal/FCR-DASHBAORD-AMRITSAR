@@ -376,13 +376,6 @@ st.markdown("---")
 # Plant Crop Summary (MAIN PAGE)
 # ==============================
 
-# ==============================
-# Plant Crop Summary (MAIN PAGE)
-# ==============================
-
-# ==============================
-# Plant Crop Summary (MAIN PAGE)
-# ==============================
 
 plant_df = load_plant_crop_summary()
 
@@ -417,12 +410,12 @@ p4.metric(
     int(last_12_df["Pending_Survey"].sum())
 )
 
-avg_perf = last_12_df["Performance"].mean()
+# avg_perf = last_12_df["Performance"].mean()
 
-p5.metric(
-    "Avg Performance",
-    f"{avg_perf:.2f}%"
-)
+# p5.metric(
+#     "Avg Performance",
+#     f"{avg_perf:.2f}%"
+# )
 
 st.markdown("---")
 # ==============================
@@ -718,3 +711,4 @@ st.dataframe(filtered_df)
 st.markdown("---")
 st.caption("Developed for FCR Monitoring | ")
 st.caption("Tanish Singhal | +91-9888636338 ")
+

@@ -110,8 +110,8 @@ c2.metric("📐 Uploaded Plots", int(latest_df["Uploaded_Plots"].sum()))
 c3.metric("✅ Completed Plots", int(latest_df["Completed_Plots"].sum()))
 c4.metric("⏳ Pending Survey", int(latest_df["Pending_Survey"].sum()))
 
-avg_perf = latest_df["Performance"].mean()
-c5.metric("📊 Avg Performance", f"{avg_perf:.2f}%")
+# avg_perf = latest_df["Performance"].mean()
+# c5.metric("📊 Avg Performance", f"{avg_perf:.2f}%")
 
 # ==============================
 # TREND OVER TIME
@@ -184,3 +184,4 @@ st.dataframe(filtered_df, use_container_width=True)
 
 st.markdown("---")
 st.caption("Plant Crop Survey | Rabi 2025–26 | FCR Dashboard")
+

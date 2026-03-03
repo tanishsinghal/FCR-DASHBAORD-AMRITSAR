@@ -164,10 +164,7 @@ st.plotly_chart(fig_tehsil, use_container_width=True)
 
 st.markdown("---")
 
-# ==============================
-# TREND ANALYSIS (IMPORTANT)
-# ==============================
-st.subheader("📈 Trend: Mutation Pendency (>30 Days)")
+
 
 # ==============================
 # TREND ANALYSIS
@@ -194,17 +191,6 @@ else:
 
 st.markdown("---")
 
-if trend_df["Date"].nunique() < 2:
-    st.info("📌 Trend requires data from multiple dates. Please expand the date range.")
-else:
-    fig_trend = px.line(
-        trend_df,
-        x="Date",
-        y="Grand Total of Mutation pendency beyond 30 days",
-        markers=True
-    )
-    st.plotly_chart(fig_trend, use_container_width=True)
-st.markdown("---")
 # ==============================
 # DATA TABLE
 # ==============================
@@ -218,3 +204,4 @@ st.markdown("---")
 st.caption("Mutation Pending Monitoring | FCR Dashboard")
 
 st.caption("Prepared by Tanish Singhal")
+

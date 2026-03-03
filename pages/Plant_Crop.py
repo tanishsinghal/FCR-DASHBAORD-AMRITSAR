@@ -95,17 +95,23 @@ if tehsils:
 # ==============================
 # KPI SUMMARY
 # ==============================
+# ==============================
+# KPI SUMMARY (LATEST DATE ONLY)
+# ==============================
+
+latest_date = filtered_df["Date"].max()
+
+latest_df = filtered_df[filtered_df["Date"] == latest_date]
+
 c1, c2, c3, c4, c5 = st.columns(5)
 
-c1.metric("🏘️ Total no. of villages", int(filtered_df["Total_Villages"].sum()))
-c2.metric("📐 Uploaded Plots", int(filtered_df["Uploaded_Plots"].sum()))
-c3.metric("✅ Completed Plots", int(filtered_df["Completed_Plots"].sum()))
-c4.metric("⏳ Pending Survey", int(filtered_df["Pending_Survey"].sum()))
+c1.metric("🏘️ Total no. of villages", int(latest_df["Total_Villages"].sum()))
+c2.metric("📐 Uploaded Plots", int(latest_df["Uploaded_Plots"].sum()))
+c3.metric("✅ Completed Plots", int(latest_df["Completed_Plots"].sum()))
+c4.metric("⏳ Pending Survey", int(latest_df["Pending_Survey"].sum()))
 
-avg_perf = filtered_df["Performance"].mean()
+avg_perf = latest_df["Performance"].mean()
 c5.metric("📊 Avg Performance", f"{avg_perf:.2f}%")
-
-st.markdown("---")
 
 # ==============================
 # TREND OVER TIME

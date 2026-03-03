@@ -169,23 +169,9 @@ st.markdown("---")
 # ==============================
 st.subheader("📈 Trend: Mutation Pendency (>30 Days)")
 
-trend = (
-    filtered_df
-    .groupby("Date")["Grand Total of Mutation pendency beyond 30 days"]
-    .sum()
-    .reset_index()
-)
-
-fig_trend = px.line(
-    trend,
-    x="Date",
-    y="Grand Total of Mutation pendency beyond 30 days",
-    markers=True
-)
-
-st.plotly_chart(fig_trend, use_container_width=True)
-
-st.markdown("---")
+# ==============================
+# TREND ANALYSIS
+# ==============================
 st.subheader("📈 Trend: Mutation Pendency (>30 Days)")
 
 trend_df = (
@@ -194,6 +180,19 @@ trend_df = (
     .sum()
     .reset_index()
 )
+
+if trend_df["Date"].nunique() < 2:
+    st.info("📌 Trend requires data from multiple dates. Please expand the date range.")
+else:
+    fig_trend = px.line(
+        trend_df,
+        x="Date",
+        y="Grand Total of Mutation pendency beyond 30 days",
+        markers=True
+    )
+    st.plotly_chart(fig_trend, use_container_width=True)
+
+st.markdown("---")
 
 if trend_df["Date"].nunique() < 2:
     st.info("📌 Trend requires data from multiple dates. Please expand the date range.")
@@ -217,4 +216,5 @@ st.dataframe(filtered_df, use_container_width=True)
 # ==============================
 st.markdown("---")
 st.caption("Mutation Pending Monitoring | FCR Dashboard")
+
 st.caption("Prepared by Tanish Singhal")

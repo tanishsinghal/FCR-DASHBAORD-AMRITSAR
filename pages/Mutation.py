@@ -78,6 +78,12 @@ if len(date_range) == 2:
 if tehsils:
     filtered_df = filtered_df[filtered_df["Tehsil"].isin(tehsils)]
 
+# =================================
+# USE ONLY LATEST DATE DATA
+# =================================
+latest_date = filtered_df["Date"].max()
+filtered_df = filtered_df[filtered_df["Date"] == latest_date]
+
 # ==============================
 # KPI SUMMARY (MEANINGFUL)
 # ==============================
@@ -204,4 +210,5 @@ st.markdown("---")
 st.caption("Mutation Pending Monitoring | FCR Dashboard")
 
 st.caption("Prepared by Tanish Singhal")
+
 

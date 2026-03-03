@@ -189,7 +189,11 @@ fig_bar = px.bar(
     bar,
     x="Tehsil",
     y=["Completed_Plots", "Pending_Survey"],
-    barmode="stack"
+    barmode="stack",
+    color_discrete_map={
+        "Completed_Plots": "green",
+        "Pending_Survey": "red"
+    }
 )
 
 st.plotly_chart(fig_bar, use_container_width=True)
@@ -223,5 +227,6 @@ st.dataframe(filtered_df, use_container_width=True)
 
 st.markdown("---")
 st.caption("Plant Crop Survey | Rabi 2025–26 | FCR Dashboard")
+
 
 

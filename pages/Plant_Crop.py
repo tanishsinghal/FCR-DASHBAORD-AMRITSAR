@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🌾 Digital Crop Survey Dashboard (Rabi 2025–26)")
+st.title("🌾 Plant Crop Survey Dashboard (Rabi 2025–26)")
 st.caption("Daily Progress & Performance Overview")
 st.markdown("---")
 
@@ -108,8 +108,8 @@ c2.metric("📐 Uploaded Plots", int(latest_df["Uploaded_Plots"].sum()))
 c3.metric("✅ Completed Plots", int(latest_df["Completed_Plots"].sum()))
 c4.metric("⏳ Pending Survey", int(latest_df["Pending_Survey"].sum()))
 
-# avg_perf = latest_df["Performance"].mean()
-# c5.metric("📊 Avg Performance", f"{avg_perf:.2f}%")
+avg_perf = latest_df["Performance"].mean()
+c5.metric("📊 Avg Performance", f"{avg_perf:.2f}%")
 
 # ==============================
 # TREND OVER TIME
@@ -134,6 +134,44 @@ fig_trend = px.line(
 
 
 st.plotly_chart(fig_trend, use_container_width=True)
+
+
+# ==============================
+# Completion Trend Over Time (Tehsil-wise)
+# ==============================
+
+st.subheader("📊 Completion Trend Over Time (Tehsil-wise)")
+
+# Optional: allow selecting specific tehsils
+selected_tehsils = st.multiselect(
+    "Select Tehsil",
+    sorted(filtered_df["Tehsil"].unique()),
+    default=sorted(filtered_df["Tehsil"].unique())
+)
+
+tehsil_trend_df = filtered_df.copy()
+
+if selected_tehsils:
+    tehsil_trend_df = tehsil_trend_df[
+        tehsil_trend_df["Tehsil"].isin(selected_tehsils)
+    ]
+
+trend_tehsil = (
+    tehsil_trend_df
+    .groupby(["Date", "Tehsil"])["Completed_Plots"]
+    .sum()
+    .reset_index()
+)
+
+fig_tehsil_trend = px.line(
+    trend_tehsil,
+    x="Date",
+    y="Completed_Plots",
+    color="Tehsil",
+    markers=True
+)
+
+st.plotly_chart(fig_tehsil_trend, use_container_width=True)
 
 # ==============================
 # TEHSIL-WISE STATUS
@@ -185,5 +223,3 @@ st.dataframe(filtered_df, use_container_width=True)
 
 st.markdown("---")
 st.caption("Plant Crop Survey | Rabi 2025–26 | FCR Dashboard")
-
-

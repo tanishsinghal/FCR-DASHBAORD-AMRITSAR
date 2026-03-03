@@ -376,35 +376,45 @@ st.markdown("---")
 # Plant Crop Summary (MAIN PAGE)
 # ==============================
 
+# ==============================
+# Plant Crop Summary (MAIN PAGE)
+# ==============================
+
 plant_df = load_plant_crop_summary()
 
-st.subheader(" Plant Crop Summary (Rabi 2025–26)")
+st.subheader("Plant Crop Summary (Rabi 2025–26)")
+
+# 🔥 Use latest date only
+latest_date = plant_df["Date"].max()
+latest_df = plant_df[plant_df["Date"] == latest_date]
 
 p1, p2, p3, p4, p5 = st.columns(5)
 
 p1.metric(
     "Villages",
-    int(plant_df["Total_Villages"].sum())
+    int(latest_df["Total_Villages"].sum())
 )
 
 p2.metric(
-    " Uploaded Plots",
-    int(plant_df["Uploaded_Plots"].sum())
+    "Uploaded Plots",
+    int(latest_df["Uploaded_Plots"].sum())
 )
 
 p3.metric(
-    " Completed Plots",
-    int(plant_df["Completed_Plots"].sum())
+    "Completed Plots",
+    int(latest_df["Completed_Plots"].sum())
 )
 
 p4.metric(
-    " Pending Survey",
-    int(plant_df["Pending_Survey"].sum())
+    "Pending Survey",
+    int(latest_df["Pending_Survey"].sum())
 )
 
+avg_perf = latest_df["Performance"].mean()
+
 p5.metric(
-    " Avg Performance",
-    f"{plant_df['Performance'].mean():.2f}%"
+    "Avg Performance",
+    f"{avg_perf:.2f}%"
 )
 
 st.markdown("---")

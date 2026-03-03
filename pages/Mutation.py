@@ -77,12 +77,16 @@ if len(date_range) == 2:
 
 if tehsils:
     filtered_df = filtered_df[filtered_df["Tehsil"].isin(tehsils)]
+# =================================
+# Separate dataframes properly
+# =================================
 
-# =================================
-# USE ONLY LATEST DATE DATA
-# =================================
-latest_date = filtered_df["Date"].max()
-filtered_df = filtered_df[filtered_df["Date"] == latest_date]
+# Keep full filtered data for trend & table
+trend_base_df = filtered_df.copy()
+
+# Create latest-date dataframe for KPIs & bar charts
+latest_date = trend_base_df["Date"].max()
+latest_df = trend_base_df[trend_base_df["Date"] == latest_date]
 
 # ==============================
 # KPI SUMMARY (MEANINGFUL)
@@ -91,7 +95,7 @@ c1, c2, c3, c4 = st.columns(4)
 
 c1.metric(
     "🧾 Patwari >30 Days",
-    filtered_df["Pendency at Patwari Level Beyond 30 days"].sum()
+    latest_df["Pendency at Patwari Level Beyond 30 days"].sum()
 )
 
 c2.metric(
@@ -143,7 +147,7 @@ st.markdown("---")
 st.subheader("📍 Tehsil-wise Mutation Pendency (>30 Days)")
 
 tehsil_bar = (
-    filtered_df
+    latest_df
     .groupby("Tehsil")[
         [
             "Pendency at Patwari Level Beyond 30 days",
@@ -175,34 +179,31 @@ st.markdown("---")
 # ==============================
 # TREND ANALYSIS
 # ==============================
+# ==============================
+# TREND ANALYSIS
+# ==============================
 st.subheader("📈 Trend: Mutation Pendency (>30 Days)")
 
 trend_df = (
-    filtered_df
+    trend_base_df
     .groupby("Date")["Grand Total of Mutation pendency beyond 30 days"]
     .sum()
     .reset_index()
 )
 
-if trend_df["Date"].nunique() < 2:
-    st.info("📌 Trend requires data from multiple dates. Please expand the date range.")
-else:
-    fig_trend = px.line(
-        trend_df,
-        x="Date",
-        y="Grand Total of Mutation pendency beyond 30 days",
-        markers=True
-    )
-    st.plotly_chart(fig_trend, use_container_width=True)
+fig_trend = px.line(
+    trend_df,
+    x="Date",
+    y="Grand Total of Mutation pendency beyond 30 days",
+    markers=True
+)
 
-st.markdown("---")
-
+st.plotly_chart(fig_trend, use_container_width=True)
 # ==============================
 # DATA TABLE
 # ==============================
 st.subheader("📋 Detailed Mutation Pending Data")
-st.dataframe(filtered_df, use_container_width=True)
-
+st.dataframe(trend_base_df, use_container_width=True)
 # ==============================
 # FOOTER
 # ==============================
@@ -210,5 +211,6 @@ st.markdown("---")
 st.caption("Mutation Pending Monitoring | FCR Dashboard")
 
 st.caption("Prepared by Tanish Singhal")
+
 
 

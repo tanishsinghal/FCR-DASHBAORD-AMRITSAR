@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🌾 Plant Crop Survey Dashboard (Rabi 2025–26)")
+st.title("🌾 Digital Crop Survey Dashboard (Rabi 2025–26)")
 st.caption("Daily Progress & Performance Overview")
 st.markdown("---")
 
@@ -223,3 +223,4 @@ st.dataframe(filtered_df, use_container_width=True)
 
 st.markdown("---")
 st.caption("Plant Crop Survey | Rabi 2025–26 | FCR Dashboard")
+

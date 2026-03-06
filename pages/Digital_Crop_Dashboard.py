@@ -32,6 +32,27 @@ def load_crop_data():
 
 df = load_crop_data()
 
+df = df.rename(columns={
+    "Tehsil/Sub Tehsil":"Tehsil"
+})
+# ==================================
+# GLOBAL FILTERS
+# ==================================
+
+st.sidebar.header("🔎 Filters")
+
+# Tehsil filter
+tehsil_list = sorted(df["Tehsil"].dropna().unique())
+
+selected_tehsil = st.sidebar.multiselect(
+    "Select Tehsil",
+    tehsil_list,
+    default=tehsil_list
+)
+
+# Apply filter
+df = df[df["Tehsil"].isin(selected_tehsil)]
+
 # Detect survey columns
 survey_cols = [c for c in df.columns if "Plots surveyed" in c]
 surveyor_cols = [c for c in df.columns if "Surveyors on field" in c]
@@ -77,9 +98,7 @@ surveyors = df["Number of Pvt. Surveyors identified"].sum()
 
 
 # Rename column for easier use
-df = df.rename(columns={
-    "Tehsil/Sub Tehsil":"Tehsil"
-})
+
 
 
 df["Total Plots"] = df["Total number of uploaded plots"]
@@ -484,7 +503,6 @@ st.plotly_chart(fig_progress, use_container_width=True)
 ##########################################################################################
 st.markdown("## 📊 Completion Trend Over Time (Tehsil-wise)")
 
-# Convert wide → long format
 trend_df = df.melt(
     id_vars=["Tehsil"],
     value_vars=survey_cols,
@@ -495,17 +513,31 @@ trend_df = df.melt(
 trend_df["Date"] = trend_df["Date"].str.replace("Plots surveyed on ", "")
 trend_df["Date"] = pd.to_datetime(trend_df["Date"], format="%d-%m-%Y")
 
-# Tehsil filter
-selected_tehsil = st.multiselect(
-    "Select Tehsil",
-    trend_df["Tehsil"].unique(),
-    default=trend_df["Tehsil"].unique()
+from datetime import datetime
+
+min_date = trend_df["Date"].min().to_pydatetime()
+max_date = trend_df["Date"].max().to_pydatetime()
+
+date_range = st.slider(
+    "Select Date Range",
+    min_value=min_date,
+    max_value=max_date,
+    value=(min_date, max_date),
+    format="DD-MM-YYYY"
 )
 
-trend_filtered = trend_df[trend_df["Tehsil"].isin(selected_tehsil)]
+trend_df = trend_df[
+    (trend_df["Date"] >= pd.to_datetime(date_range[0])) &
+    (trend_df["Date"] <= pd.to_datetime(date_range[1]))
+]
+
+trend_df = trend_df[
+    (trend_df["Date"] >= date_range[0]) &
+    (trend_df["Date"] <= date_range[1])
+]
 
 fig_trend = px.line(
-    trend_filtered,
+    trend_df,
     x="Date",
     y="Completed_Plots",
     color="Tehsil",

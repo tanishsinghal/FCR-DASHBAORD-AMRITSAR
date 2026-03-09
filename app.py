@@ -372,52 +372,52 @@ c2.metric("Maps Received", maps_received)
 c3.metric("Maps Validated", maps_validated)
 c4.metric("Total Pending", pending_total)
 st.markdown("---")
-# ==============================
-# Plant Crop Summary (MAIN PAGE)
-# ==============================
+# # ==============================
+# # Plant Crop Summary (MAIN PAGE)
+# # ==============================
 
 
-plant_df = load_plant_crop_summary()
+# plant_df = load_plant_crop_summary()
 
-st.subheader("Plant Crop Summary (Rabi 2025–26)")
+# st.subheader("Plant Crop Summary (Rabi 2025–26)")
 
-# 🔥 Take LAST 12 ROWS (latest entries)
-last_12_df = (
-    plant_df
-    .sort_values("Date", ascending=False)
-    .head(12)
-)
-
-p1, p2, p3, p4, p5 = st.columns(5)
-
-p1.metric(
-    "Villages",
-    int(last_12_df["Total_Villages"].sum())
-)
-
-p2.metric(
-    "Uploaded Plots",
-    int(last_12_df["Uploaded_Plots"].sum())
-)
-
-p3.metric(
-    "Completed Plots",
-    int(last_12_df["Completed_Plots"].sum())
-)
-
-p4.metric(
-    "Pending Survey",
-    int(last_12_df["Pending_Survey"].sum())
-)
-
-# avg_perf = last_12_df["Performance"].mean()
-
-# p5.metric(
-#     "Avg Performance",
-#     f"{avg_perf:.2f}%"
+# # 🔥 Take LAST 12 ROWS (latest entries)
+# last_12_df = (
+#     plant_df
+#     .sort_values("Date", ascending=False)
+#     .head(12)
 # )
 
-st.markdown("---")
+# p1, p2, p3, p4, p5 = st.columns(5)
+
+# p1.metric(
+#     "Villages",
+#     int(last_12_df["Total_Villages"].sum())
+# )
+
+# p2.metric(
+#     "Uploaded Plots",
+#     int(last_12_df["Uploaded_Plots"].sum())
+# )
+
+# p3.metric(
+#     "Completed Plots",
+#     int(last_12_df["Completed_Plots"].sum())
+# )
+
+# p4.metric(
+#     "Pending Survey",
+#     int(last_12_df["Pending_Survey"].sum())
+# )
+
+# # avg_perf = last_12_df["Performance"].mean()
+
+# # p5.metric(
+# #     "Avg Performance",
+# #     f"{avg_perf:.2f}%"
+# # )
+
+# st.markdown("---")
 # ==============================
 # BHUNAKSHA SUMMARY (MAIN PAGE)
 # ==============================
@@ -711,4 +711,5 @@ st.dataframe(filtered_df)
 st.markdown("---")
 st.caption("Developed for FCR Monitoring | ")
 st.caption("Tanish Singhal | +91-9888636338 ")
+
 

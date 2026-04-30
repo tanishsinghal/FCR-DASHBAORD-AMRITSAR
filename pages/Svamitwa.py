@@ -196,24 +196,20 @@ with c2:
 # ==============================
 st.subheader("📈 Daily Trend (Custom Range)")
 
-# Create a LOCAL copy (important)
-trend_df = df.copy()
+trend_df = filtered_df.copy()
 
-# Get min/max
 min_date = trend_df["Date"].min().date()
 max_date = trend_df["Date"].max().date()
 
-# 🎚️ LOCAL SLIDER (ONLY FOR THIS GRAPH)
 trend_range = st.slider(
     "Select Date Range for Trend",
     min_value=min_date,
     max_value=max_date,
     value=(min_date, max_date),
     format="YYYY-MM-DD",
-    key="trend_slider"   # important to avoid conflicts
+    key="trend_slider"
 )
 
-# Apply ONLY to this graph
 trend_df = trend_df[
     (trend_df["Date"] >= pd.to_datetime(trend_range[0])) &
     (trend_df["Date"] <= pd.to_datetime(trend_range[1]))
@@ -226,9 +222,11 @@ trend = (
     .reset_index()
 )
 
-# 🔥 Calculate daily change
+# ✅ FIXED delta logic
+numeric_cols = trend.select_dtypes(include="number").columns
+
 delta = trend.copy()
-delta.iloc[:, 1:] = delta.iloc[:, 1:].diff().fillna(0)
+delta[numeric_cols] = delta[numeric_cols].diff().fillna(0)
 
 fig = px.bar(
     delta,

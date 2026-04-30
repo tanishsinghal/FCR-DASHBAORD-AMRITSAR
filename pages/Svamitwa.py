@@ -105,7 +105,12 @@ k1, k2, k3, k4 = st.columns(4)
 
 k1.metric(
     "Total Villages Under Scheme",
-    int(latest_df["Total No. of Villages under Scheme"].sum())
+    int(
+    filtered_df
+    .sort_values("Date")
+    .tail(17)["Total No. of Villages under Scheme"]
+    .sum()
+)
 )
 
 k2.metric(

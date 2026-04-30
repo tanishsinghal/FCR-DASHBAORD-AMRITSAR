@@ -85,7 +85,16 @@ if len(date_range) == 2:
         (filtered_df["Date"] >= pd.to_datetime(date_range[0])) &
         (filtered_df["Date"] <= pd.to_datetime(date_range[1]))
     ]
+# ==============================
+# ✅ GET LATEST SNAPSHOT (FIX)
+# ==============================
 
+latest_df = (
+    filtered_df
+    .sort_values("Date")
+    .groupby("Tehsil")
+    .tail(1)
+)
 
 # ==============================
 # KPI SUMMARY (MEANINGFUL)
@@ -96,7 +105,7 @@ k1, k2, k3, k4 = st.columns(4)
 
 k1.metric(
     "Total Villages Under Scheme",
-    int(filtered_df["Total No. of Villages under Scheme"].sum())
+    int(latest_df["Total No. of Villages under Scheme"].sum())
 )
 
 k2.metric(

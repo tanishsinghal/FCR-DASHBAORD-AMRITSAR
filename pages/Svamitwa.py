@@ -219,7 +219,6 @@ trend_df = trend_df[
     (trend_df["Date"] <= pd.to_datetime(trend_range[1]))
 ]
 
-# Aggregate
 trend = (
     trend_df
     .groupby("Date")
@@ -227,16 +226,20 @@ trend = (
     .reset_index()
 )
 
-# Plot
-fig = px.line(
-    trend,
+# 🔥 Calculate daily change
+delta = trend.copy()
+delta.iloc[:, 1:] = delta.iloc[:, 1:].diff().fillna(0)
+
+fig = px.bar(
+    delta,
     x="Date",
     y=[
         "Total No. of Villages Received by Dist. from SoI",
         "Villages where ground truthing completed & sent back to SoI",
         "Map-1 Ground Truthing"
     ],
-    markers=True
+    barmode="group",
+    title="📈 Daily Progress Change"
 )
 
 st.plotly_chart(fig, use_container_width=True)

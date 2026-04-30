@@ -95,6 +95,7 @@ latest_df = (
     .groupby("Tehsil")
     .tail(1)
 )
+filtered_df = filtered_df.reset_index(drop=True)
 
 # ==============================
 # KPI SUMMARY (MEANINGFUL)

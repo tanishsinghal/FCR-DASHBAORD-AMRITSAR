@@ -191,6 +191,56 @@ with c2:
     st.write("### ⚠️ Bottom 3 Tehsils")
     st.dataframe(bottom3, use_container_width=True)
 
+# ==============================
+# 📈 DAILY TREND (WITH LOCAL DATE SLIDER)
+# ==============================
+st.subheader("📈 Daily Trend (Custom Range)")
+
+# Create a LOCAL copy (important)
+trend_df = df.copy()
+
+# Get min/max
+min_date = trend_df["Date"].min().date()
+max_date = trend_df["Date"].max().date()
+
+# 🎚️ LOCAL SLIDER (ONLY FOR THIS GRAPH)
+trend_range = st.slider(
+    "Select Date Range for Trend",
+    min_value=min_date,
+    max_value=max_date,
+    value=(min_date, max_date),
+    format="YYYY-MM-DD",
+    key="trend_slider"   # important to avoid conflicts
+)
+
+# Apply ONLY to this graph
+trend_df = trend_df[
+    (trend_df["Date"] >= pd.to_datetime(trend_range[0])) &
+    (trend_df["Date"] <= pd.to_datetime(trend_range[1]))
+]
+
+# Aggregate
+trend = (
+    trend_df
+    .groupby("Date")
+    .sum(numeric_only=True)
+    .reset_index()
+)
+
+# Plot
+fig = px.line(
+    trend,
+    x="Date",
+    y=[
+        "Total No. of Villages Received by Dist. from SoI",
+        "Villages where ground truthing completed & sent back to SoI",
+        "Map-1 Ground Truthing"
+    ],
+    markers=True
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
 
 # ==============================
 # 📋 FULL DATA

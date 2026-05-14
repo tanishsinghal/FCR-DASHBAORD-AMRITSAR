@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 
+df=pd.read_csv("data.csv")
+
 st.set_page_config(
     page_title="FCR Dashboard",
     layout="wide"
